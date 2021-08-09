@@ -1,0 +1,197 @@
+/*ログインにて表示・非表示*/
+
+.visible-block {
+    display: block;
+}
+
+.hidden-block {
+    display: none;
+}
+
+
+/*選択肢投稿画面*/
+
+.head {
+    text-align: center;
+    font-weight: bolder;
+    margin-bottom: 30px;
+}
+
+.theme {
+    font-weight: bolder;
+    margin-bottom: 0;
+}
+
+.post-theme {
+    margin-bottom: 30px;
+}
+
+.choices {
+    border-style: solid;
+    border-width: 5px;
+    border-color: rgba(0, 150, 200, 0.2);
+    margin-bottom: 30px;
+    padding: 10px 20px;
+}
+
+.more {
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    padding: 0;
+    line-height: 40px;
+    border-radius: 10px;
+}
+
+/*ホーム画面*/
+
+.button-block {
+    padding: 200px 0;
+    justify-content: space-around;
+    background-image: url(images/watercolor_00010.jpg);
+    background-size: cover;
+}
+
+/*投稿リスト画面*/
+
+.title {
+    text-align: center;
+}
+
+.paragrah {
+    text-align: center;
+    list-style: none;
+}
+
+.optionTheme {
+    text-align: center;
+}
+
+.vote-item {
+    width: 60%!important;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    border-style: groove;
+    border-radius: 10px;
+    position: relative;
+}
+
+.vote-items {
+    width: 33.3%;
+}
+
+.vote-item_warpper {
+    /*position: absolute;*/
+    display: flex;
+    /*justify-content: space-between;*/
+    margin-left: 30px;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.vote-item__image {
+    max-width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    border: 8px solid #fff;
+    box-shadow: 4px 4px 6px 1px #ccc;
+    margin-left: 9px;
+    margin-right: 9px;
+    margin-bottom: 18px;
+}
+
+.vote-item__image:hover {
+    /* 1.1倍に拡大 */
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.vote-item__text__warpper {
+    text-align: justify;
+}
+
+.vote-item__delete {
+    position: absolute;
+    right: 0;
+}
+
+.chart-size {
+    /*position: absolute;*/
+    /*align-items: center;*/
+    display: block !important;
+    width: 33.3%!important;
+    max-height: 120px;
+}
+
+/* トップに戻るボタン */
+
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    display: none;
+    width: 40px;
+    height: 40px;
+
+    background-color: #f0f0f0;
+    color: #333;
+    opacity: 0.6;
+
+    font-size: 1.6rem;
+    line-height: 40px;
+    text-align: center;
+    /*text-decoration: none;*/
+}
+
+/* マウスを乗せた時に透明度を変える */
+
+.back-to-top:hover {
+    cursor: pointer;
+}
+
+@media(max-width: 576px) {
+    .vote-item {
+        min-width: 330px;
+    }
+    .vote-items {
+        display: flex;
+        align-items: center;
+    }
+    .vote-item_warpper {
+        /*position: relative;*/
+    }
+    /*.flexbox {*/
+    /*    display: -webkit-box;*/
+    /*    display: -webkit-flex;*/
+    /*    display: -ms-flexbox;*/
+    /*    display: flex;*/
+    /*    -webkit-flex-wrap: wrap;*/
+    /*    -ms-flex-wrap: wrap;*/
+    /*    flex-wrap: wrap;*/
+    /*}*/
+    /*.vote-items {*/
+    /*    -webkit-box-ordinal-group: 1;*/
+    /*    -ms-flex-order: 1;*/
+    /*    -webkit-order: 1;*/
+    /*    order: 1;*/
+    /*}*/
+    /*.chart-size {*/
+    /*    -webkit-box-ordinal-group: 2;*/
+    /*    -ms-flex-order: 2;*/
+    /*    -webkit-order: 2;*/
+    /*    order: 2;*/
+    /*}*/
+    /* ウインドウ幅500px以上の時に適用されるスタイル */
+    .chart-size {
+        width: 50px;
+        height: 50px;
+        min-width: 100px;
+        min-height: 100px;
+    }
+}

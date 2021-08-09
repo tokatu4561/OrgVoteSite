@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>original site</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <!--ヘッダー要素-->
+    <header>
+        <nav class="navbar navbar-light bg-info">
+            <a href="./index.html" class="navbar-brand">Vote</a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#nav-bar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="nav-bar">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a href="./index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="" class="nav-link logout-button">ログアウト</a></li>
+            </div>
+        </nav>
+    </header>
+    <!--メイン要素-->
+    <main>
+        <!--ログイン-->
+        <section id="login" class="view visible-on-logout">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <form id="login-form">
+                            <div class="form-group login__email">
+                                <label for="login-email" class="col-form-label">メールアドレス</label>
+                                <div>
+                                    <input id="login-email" type="email" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group login__password">
+                                <label for="login-password" class="col-form-label">パスワード(６文字以上で設定してください) </label>
+                                <div>
+                                    <input id="login-password" type="password" class="form-control" required>
+                                </div>
+                            </div>
+                            <!--<div id="login__help" class="alert alert-danger"></div>-->
+                            <div class="form-group login__submit">
+                                <div>
+                                    <button id="login__submit-button" type="submit" class="btn btn-info">ログイン</button>
+                                </div>
+                            </div>
+                            <div id="login__help" class="alert alert-danger"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--シングルページ-->
+
+        <div id="original">
+            <!--ログイン-->
+            <div v-if="activePage === 'homePage'" class="container visible-on-login">
+                <div class="button-block row">
+                    <!--<button onclick="location.href='./post.html'" class="col-3 btn btn-info">選択肢を投稿する</button>-->
+                    <button v-on:click="activePage = 'postPage'" class="col-3 btn btn-info">
+                        選択肢を投稿する</button>
+                    <!--<button onclick="location.href='./index.html'" class="offset-3 col-3 btn btn-info">投稿を見る</button>-->
+                    <button v-on:click="activePage = 'ListPage'" class="offset-3 col-3 btn btn-info">
+                        投稿を見る</button>
+                </div>
+            </div>
+            <!--投稿する-->
+            <section v-else-if="activePage === 'postPage'">
+                <h1 class="head">選択肢を追加しましょう</h1>
+                <div class="first-choices container">
+                    <form id="post-form" v-on:submit.prevent="uploadDatastructure">
+                        <!--選択肢のテーマ-->
+                        <div class="post-theme">
+                            <p class="theme">選択肢のテーマ:</p>
+                            <input id="add-post-theme" type="text" name="theme" class="form-control" placeholder="テーマ">
+                        </div>
+                        <!--一つ目の選択肢-->
+                        <div v-for="(choice, option) in choices" v-bind:key="option" class="choices">
+                            <div class="post-choice-image row">
+                                <label class="col-3 col-form-label">投稿画像</label>
+                                <div class="col-9">
+                                    <input v-on:change="imageUploaded(option,$event)" id="add-post-image" type="file" name="file" accept=".jpg,.jpeg,.png,.gif, image/jpeg,image/png,image/gif" class="custom-file-input" required>
+                                    <label id="add-post-image-label" class="custom-file-label" for="add-post-image">{{ choice.optionImageLocation.name }}</label>
+                                </div>
+                            </div>
+                            <div class="post-choice-text row">
+                                <label for="add-post-text" class="col-3 col-form-label">回答</label>
+                                <div class="col-9">
+                                    <input v-model="choice.text" id="add-post-text" type="text" name="text" class="form-control choice-text" placeholder="回答">
+                                </div>
+                            </div>
+                        </div>
+                        <!--選択肢投稿ボタン-->
+                        <div class="more">
+                            <button v-on:click="moreOption" class="post-button btn btn-primary"><i class="fas fa-plus-circle"></i>選択肢を追加</button>
+                            <button v-on:click="subOption" class="post-button btn btn-primary"><i class="fas fa-minus-circle"></i>選択肢を減らす</button>
+                        </div>
+                        <div class="post-choice-button">
+                            <button type="submit" name="submitButton" class="post-button btn btn-primary">投稿する</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <!--投稿する-->
+
+            <!--投稿されたリスト一覧-->
+            <section v-else-if="activePage === 'ListPage'">
+                <h1 class="title">投稿一覧</h1>
+                <ul class="paragrah">
+                    <li>投稿された選択肢が表示されます</li>
+                    <li>自分が投稿した選択肢のみ削除可能です</li>
+                </ul>
+                <p></p>
+                <div id="main">
+                    <div id="post-list" class="clearfix">
+                        <div class="vote-item container" v-for="(option, id) in options" v-bind:key="id">
+                            <h2 class="optionTheme">{{ option.optionTheme }}</h2>
+                            <div class="vote-item_warpper flexbox row">
+                                <div class="vote-items col-sm-4">
+                                    <div class="vote-item__image__warpper">
+                                        <a v-on:click.prevent="optionVote(id)">
+                                            <img class="vote-item__image" width="180px" height="180px" v-bind:src="option.option1.optionImageLocation">
+                                       </a>
+                                    </div>
+                                    <div class="vote-item__text__warpper">
+                                        <div class="vote-item__text">{{ option.option1.optionText }}</div>
+                                        <div><i class="fas fa-circle" style="color: rgb(75, 168, 255);"></i>{{ option.option1.counts }}票</div>
+                                    </div>
+                                </div>
+                                <div v-if="option.option3 != undefined" class="vote-items col-sm-4">
+                                    <div class="vote-item__image__warpper">
+                                        <a v-on:click.prevent="optionVoteThird(id)">
+                                            <img class="vote-item__image" width="180px" height="180px" v-bind:src="option.option3.optionImageLocation">
+                                       </a>
+                                    </div>
+                                    <div class="vote-item__text__warpper">
+                                        <div class="vote-item__text">{{ option.option3.optionText }}</div>
+                                        <div><i class="fas fa-circle" style="color: rgb(151, 205, 255);"></i>{{ option.option3.counts }}票</div>
+                                    </div>
+                                </div>
+                                <!--<div class="chart-container">-->
+                                <pie-chart class="chart-size col-sm-4" v-bind:option="option"></pie-chart>
+                                <!--</div>-->
+                                <div class="vote-items col-sm-4">
+                                    <div class="vote-item__image__warpper_sec">
+                                        <a v-on:click.prevent="optionVoteSec(id)">
+                                    <img class="vote-item__image" width="180px" height="180px" v-bind:src="option.option2.optionImageLocation">
+                                    </a>
+                                    </div>
+                                    <div class="vote-item__text__warpper">
+                                        <div class="vote-item__text_sec">{{ option.option2.optionText }}</div>
+                                        <div><i class="fas fa-circle" style="color: rgb(0, 91, 246);"></i>{{ option.option2.counts }}票</div>
+                                    </div>
+                                </div>
+                                <div v-if="option.option4 != undefined" class="vote-items col-sm-4">
+                                    <div class="vote-item__image__warpper_sec">
+                                        <a v-on:click.prevent="optionVoteForth(id)">
+                                    <img class="vote-item__image" width="180px" height="180px" v-bind:src="option.option4.optionImageLocation">
+                                    </a>
+                                    </div>
+                                    <div class="vote-item__text__warpper">
+                                        <div class="vote-item__text_sec">{{ option.option4.optionText }}</div>
+                                        <div><i class="fas fa-circle" style="color: rgb(0, 246, 240);"></i>{{ option.option4.counts }}票</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button v-if="deleteOption(option)" v-on:click="removeDatastracture(id)" class="btn btn-danger vote-item__delete">
+                              <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                                削除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--投稿のテンプレート-->
+                <a href="#" class="back-to-top">▲</a>
+                <div id="vote-template">
+                </div>
+            </section>
+            <!--投稿されたリスト一覧-->
+        </div>
+    </main>
+    <footer class="">
+        &copy; 2021.3
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <!--firebaseのセットアップコード-->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-storage.js"></script>
+
+    <script>
+        //     // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDOMH8CAqhSBN4RxXZRuTDRm-VjQfKjwUA",
+            authDomain: "opinionaire-4dd2a.firebaseapp.com",
+            databaseURL: "https://opinionaire-4dd2a-default-rtdb.firebaseio.com",
+            projectId: "opinionaire-4dd2a",
+            storageBucket: "opinionaire-4dd2a.appspot.com",
+            messagingSenderId: "1015112336604",
+            appId: "1:1015112336604:web:296c67e9cc3c8037f26019"
+        };
+        //     // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"></script>
+    <script src="https://ssense.github.io/vue-carousel/js/vue-carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="original.js/vue.js"></script>
+    <script src="original.js/main.js"></script>
+</body>
+
+</html>

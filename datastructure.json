@@ -1,0 +1,31 @@
+{
+    "投稿したテキスト一覧": {  　
+        "optionId": {
+            "time": "(投稿した時刻)",
+            "uid": "投稿したユーザのUID",
+            "option1": {
+                "Text": "投稿したテキスト"　　
+                "optionImageLocation": "投稿画像の保存場所"　
+                "vote": {
+                    uid: createdAt,
+                }
+            },
+            "option2": {　
+                "Text": "投稿したテキスト"　
+                "optionImageLocation": "投稿画像の保存場所"　　
+            } 
+        },
+    },
+
+
+    "ユーザー情報" {     
+        "ユーザーuid1": {      
+            "name": "ユーザーが設定する名前",
+            "createdAt": "作成時刻",
+        },
+        "ユーザーuid2": {
+            "name": "",
+            "createdAt": ""   
+        },
+    }
+}
